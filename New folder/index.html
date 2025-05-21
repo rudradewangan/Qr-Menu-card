@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QR Digital Menu</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      padding: 0;
+    }
+
+    .overlay {
+      background: rgba(0, 0, 0, 0.7);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+      color: #ffcc00;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .controls input,
+    .controls select,
+    .controls button {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    .controls input {
+      width: 200px;
+    }
+
+    .controls button {
+      background: #ffcc00;
+      color: #000;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .controls button:hover {
+      background: #e6b800;
+    }
+
+    .menu-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .menu-item {
+      background: #ffffff10;
+      border: 1px solid #ffffff30;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: 0.3s;
+    }
+
+    .menu-item img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+
+    .menu-details {
+      padding: 15px;
+    }
+
+    .menu-details h3 {
+      margin-bottom: 5px;
+      color: #ffcc00;
+    }
+
+    .menu-details p {
+      font-size: 0.9rem;
+      color: #ddd;
+    }
+
+    .menu-price {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #00ff99;
+    }
+
+    @media (max-width: 500px) {
+      .controls {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <h1 id="title">Restaurant QR Menu</h1>
+
+    <div class="controls">
+      <input type="text" id="searchInput" placeholder="Search..." oninput="searchMenu()" />
+      <select onchange="switchLanguage(this.value)">
+        <option value="en">English 🇬🇧</option>
+        <option value="hi">हिन्दी 🇮🇳</option>
+      </select>
+      <button onclick="filterMenu('all')">All</button>
+      <button onclick="filterMenu('starter')">Starters</button>
+      <button onclick="filterMenu('main')">Mains</button>
+      <button onclick="filterMenu('dessert')">Desserts</button>
+      <button onclick="filterMenu('drink')">Drinks</button>
+    </div>
+
+    <div class="menu-container" id="menu">
+      <!-- Starters -->
+      <div class="menu-item" data-category="starter" data-name="Garden Salad/गार्डन सलाद">
+        <img src="https://betterfoodguru.com/wp-content/uploads/2024/05/garden-salad-3.jpg" alt="Salad" />
+        <div class="menu-details">
+          <h3 data-en="Garden Salad" data-hi="गार्डन सलाद">Garden Salad</h3>
+          <p data-en="Fresh greens, cherry tomatoes, cucumbers, and vinaigrette." data-hi="ताजे हरे पत्ते, टमाटर, खीरे और विनैग्रेट।">Fresh greens, cherry tomatoes, cucumbers, and vinaigrette.</p>
+          <div class="menu-price">₹199</div>
+        </div>
+      </div>
+    
+      <div class="menu-item" data-category="starter" data-name="Paneer Tikka/पनीर टिक्का">
+        <img src="https://carveyourcraving.com/wp-content/uploads/2021/10/paneer-tikka-skewers-500x500.jpg" alt="Paneer Tikka" />
+        <div class="menu-details">
+          <h3 data-en="Paneer Tikka" data-hi="पनीर टिक्का">Paneer Tikka</h3>
+          <p data-en="Grilled cottage cheese with spicy marinade." data-hi="मसालेदार मेरीनेड के साथ ग्रिल किया गया पनीर।">Grilled cottage cheese with spicy marinade.</p>
+          <div class="menu-price">₹299</div>
+        </div>
+      </div>
+    
+      <div class="menu-item" data-category="starter" data-name="Tomato Soup/टमाटर सूप">
+        <img src="https://cdn.loveandlemons.com/wp-content/uploads/2023/01/tomato-soup-recipe.jpg" alt="Tomato Soup" />
+        <div class="menu-details">
+          <h3 data-en="Tomato Soup" data-hi="टमाटर सूप">Tomato Soup</h3>
+          <p data-en="Creamy tomato soup served with croutons." data-hi="क्राउटन के साथ परोसा गया मलाईदार टमाटर सूप।">Creamy tomato soup served with croutons.</p>
+          <div class="menu-price">₹149</div>
+        </div>
+      </div>
+    
+      <!-- Mains -->
+      <div class="menu-item" data-category="main" data-name="Grilled Steak/ग्रिल्ड स्टेक">
+        <img src="https://images.immediate.co.uk/production/volatile/sites/30/2020/08/recipe-image-legacy-id-1259679_8-2ab6a74.jpg" alt="Steak" />
+        <div class="menu-details">
+          <h3 data-en="Grilled Steak" data-hi="ग्रिल्ड स्टेक">Grilled Steak</h3>
+          <p data-en="Juicy steak served with garlic mashed potatoes." data-hi="रसदार स्टेक लहसुन मैश किए आलू के साथ।">Juicy steak served with garlic mashed potatoes.</p>
+          <div class="menu-price">₹749</div>
+        </div>
+      </div>
+    
+      <div class="menu-item" data-category="main" data-name="Butter Chicken/बटर चिकन">
+        <img src="https://www.mysavoryadventures.com/wp-content/uploads/2023/04/restaurant-style-butter-chicken.jpg" alt="Butter Chicken" />
+        <div class="menu-details">
+          <h3 data-en="Butter Chicken" data-hi="बटर चिकन">Butter Chicken</h3>
+          <p data-en="Creamy tomato-based curry with tender chicken." data-hi="मक्खन में पकाया गया नरम चिकन टमाटर ग्रेवी में।">Creamy tomato-based curry with tender chicken.</p>
+          <div class="menu-price">₹399</div>
+        </div>
+      </div>
+    
+      <div class="menu-item" data-category="main" data-name="Veg Biryani/वेज बिरयानी">
+        <img src="https://i.ytimg.com/vi/Do7ZdUodDdw/maxresdefault.jpg" alt="Veg Biryani" />
+        <div class="menu-details">
+          <h3 data-en="Veg Biryani" data-hi="वेज बिरयानी">Veg Biryani</h3>
+          <p data-en="Fragrant basmati rice with mixed vegetables and spices." data-hi="मसाले और सब्ज़ियों से बनी खुशबूदार बासमती चावल की बिरयानी।">Fragrant basmati rice with mixed vegetables and spices.</p>
+          <div class="menu-price">₹299</div>
+        </div>
+      </div>
+    
+      <!-- Desserts -->
+      <div class="menu-item" data-category="dessert" data-name="Lava Cake/चॉकलेट लावा केक">
+        <img src="https://www.foodandwine.com/thmb/XdFd-DvTtouryLCjeCqwhfmmK-A=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/molten-chocolate-cake-FT-RECIPE0220-0a33d7d0ab0c45588f7bfe742d33a9bc.jpg" alt="Cake" />
+        <div class="menu-details">
+          <h3 data-en="Chocolate Lava Cake" data-hi="चॉकलेट लावा केक">Chocolate Lava Cake</h3>
+          <p data-en="Warm chocolate cake with a gooey center." data-hi="गर्म चॉकलेट केक जिसमें नरम केंद्र है।">Warm chocolate cake with a gooey center.</p>
+          <div class="menu-price">₹249</div>
+        </div>
+      </div>
+    
+      <div class="menu-item" data-category="dessert" data-name="Gulab Jamun/गुलाब जामुन">
+        <img src="https://www.indianhealthyrecipes.com/wp-content/uploads/2021/11/gulab-jamun.jpg" alt="Gulab Jamun" />
+        <div class="menu-details">
+          <h3 data-en="Gulab Jamun" data-hi="गुलाब जामुन">Gulab Jamun</h3>
+          <p data-en="Deep-fried milk balls soaked in sugar syrup." data-hi="चीनी की चाशनी में डूबे दूध के तले हुए गोले।">Deep-fried milk balls soaked in sugar syrup.</p>
+          <div class="menu-price">₹149</div>
+        </div>
+      </div>
+    
+      <div class="menu-item" data-category="dessert" data-name="Ice Cream Sundae/आइसक्रीम संडे">
+        <img src="https://www.keep-calm-and-eat-ice-cream.com/wp-content/uploads/2022/08/Ice-cream-sundae-hero-11.jpg" alt="Sundae" />
+        <div class="menu-details">
+          <h3 data-en="Ice Cream Sundae" data-hi="आइसक्रीम संडे">Ice Cream Sundae</h3>
+          <p data-en="Vanilla ice cream topped with syrup, nuts, and a cherry." data-hi="वनीला आइसक्रीम पर सिरप, मेवे और चेरी।">Vanilla ice cream topped with syrup, nuts, and a cherry.</p>
+          <div class="menu-price">₹179</div>
+        </div>
+      </div>
+    
+      <!-- Drinks -->
+      <div class="menu-item" data-category="drink" data-name="Espresso/एस्प्रेसो">
+        <img src="https://blogstudio.s3.theshoppad.net/coffeeheroau/ec178d83e5f597b162cda1e60cb64194.jpg" alt="Coffee" />
+        <div class="menu-details">
+          <h3 data-en="Espresso" data-hi="एस्प्रेसो">Espresso</h3>
+          <p data-en="Rich and bold espresso shot." data-hi="गाढ़ा और मजबूत एस्प्रेसो शॉट।">Rich and bold espresso shot.</p>
+          <div class="menu-price">₹99</div>
+        </div>
+      </div>
+    
+      <div class="menu-item" data-category="drink" data-name="Masala Chai/मसाला चाय">
+        <img src="https://spicestationsilverlake.com/wp-content/uploads/2023/03/An-Introduction-to-Masala-Chai-Indias-Spiced-Tea.jpg" alt="Masala Chai" />
+        <div class="menu-details">
+          <h3 data-en="Masala Chai" data-hi="मसाला चाय">Masala Chai</h3>
+          <p data-en="Spiced Indian tea with milk and herbs." data-hi="दूध और मसालों से बनी भारतीय चाय।">Spiced Indian tea with milk and herbs.</p>
+          <div class="menu-price">₹59</div>
+        </div>
+      </div>
+    
+      <div class="menu-item" data-category="drink" data-name="Mango Lassi/मैंगो लस्सी">
+        <img src="https://shivanilovesfood.com/wp-content/uploads/2023/03/Healthy-Mango-Lassi-7.jpg" alt="Mango Lassi" />
+        <div class="menu-details">
+          <h3 data-en="Mango Lassi" data-hi="मैंगो लस्सी">Mango Lassi</h3>
+          <p data-en="Sweet mango yogurt drink." data-hi="मीठा आम और दही से बनी लस्सी।">Sweet mango yogurt drink.</p>
+          <div class="menu-price">₹89</div>
+        </div>
+      </div>
+    
+
+    <div class="menu-item" data-category="starter" data-name="Spring Rolls/स्प्रिंग रोल">
+      <img src="https://saltedmint.com/wp-content/uploads/2024/01/Vegetable-Spring-Rolls-4-500x375.jpg" alt="Spring Rolls" />
+      <div class="menu-details">
+        <h3 data-en="Spring Rolls" data-hi="स्प्रिंग रोल">Spring Rolls</h3>
+        <p data-en="Crispy rolls stuffed with veggies and served with sauce." data-hi="सब्जियों से भरे कुरकुरे रोल।">Crispy rolls stuffed with veggies and served with sauce.</p>
+        <div class="menu-price">₹189</div>
+      </div>
+    </div>
+  
+  
+    <div class="menu-item" data-category="starter" data-name="Hara Bhara Kabab/हरा भरा कबाब">
+      <img src="https://t4.ftcdn.net/jpg/06/29/26/43/360_F_629264321_lOlUk25mSn9iNZnRlPTfTj2GrX9tlRU1.jpg" alt="Hara Bhara Kabab" />
+      <div class="menu-details">
+        <h3 data-en="Hara Bhara Kabab" data-hi="हरा भरा कबाब">Hara Bhara Kabab</h3>
+        <p data-en="Green vegetable patties with Indian spices." data-hi="भारतीय मसालों से बने हरे सब्जियों के कबाब।">Green vegetable patties with Indian spices.</p>
+        <div class="menu-price">₹199</div>
+      </div>
+    </div>
+  
+    <!-- Mains -->
+    <div class="menu-item" data-category="main" data-name="Dal Makhani/दाल मखनी">
+      <img src="https://www.funfoodfrolic.com/wp-content/uploads/2023/04/Dal-Makhani-Blog.jpg" alt="Dal Makhani" />
+      <div class="menu-details">
+        <h3 data-en="Dal Makhani" data-hi="दाल मखनी">Dal Makhani</h3>
+        <p data-en="Creamy black lentils cooked with butter and cream." data-hi="मक्खन और मलाई से बनी काली दाल।">Creamy black lentils cooked with butter and cream.</p>
+        <div class="menu-price">₹269</div>
+      </div>
+    </div>
+  
+    <div class="menu-item" data-category="main" data-name="Chicken Biryani/चिकन बिरयानी">
+      <img src="https://static.vecteezy.com/system/resources/previews/054/743/080/large_2x/the-perfect-dish-of-chicken-biryani-for-your-culinary-inspiration-photo.jpg" alt="Chicken Biryani" />
+      <div class="menu-details">
+        <h3 data-en="Chicken Biryani" data-hi="चिकन बिरयानी">Chicken Biryani</h3>
+        <p data-en="Spiced chicken with basmati rice and herbs." data-hi="मसालेदार चिकन और बासमती चावल की बिरयानी।">Spiced chicken with basmati rice and herbs.</p>
+        <div class="menu-price">₹349</div>
+      </div>
+    </div>
+  
+    <!-- Desserts -->
+    <div class="menu-item" data-category="dessert" data-name="Rasmalai/रसमलाई">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTozWurAEjSGdUxRrE6YURH3rchmMSdRR_3YQ&s" alt="Rasmalai" />
+      <div class="menu-details">
+        <h3 data-en="Rasmalai" data-hi="रसमलाई">Rasmalai</h3>
+        <p data-en="Soft paneer balls soaked in saffron milk." data-hi="केसर दूध में भीगे नरम पनीर के गोले।">Soft paneer balls soaked in saffron milk.</p>
+        <div class="menu-price">₹199</div>
+      </div>
+    </div>
+  
+    <div class="menu-item" data-category="dessert" data-name="Kulfi/कुल्फी">
+      <img src="https://media.istockphoto.com/id/657073780/photo/rajwari-or-rajwadi-sweet-kesar-badam-pista-kulfi-or-ice-cream-candy.jpg?s=612x612&w=0&k=20&c=cXhI8hVEhYc5inbPXt-YWbUYjlJlGC2TdRd_Xkn56Ig=" alt="Kulfi" />
+      <div class="menu-details">
+        <h3 data-en="Kulfi" data-hi="कुल्फी">Kulfi</h3>
+        <p data-en="Traditional Indian ice cream made with milk and dry fruits." data-hi="दूध और सूखे मेवों से बनी पारंपरिक भारतीय कुल्फी।">Traditional Indian ice cream made with milk and dry fruits.</p>
+        <div class="menu-price">₹129</div>
+      </div>
+    </div>
+  
+    <!-- Drinks -->
+    <div class="menu-item" data-category="drink" data-name="Cold Coffee/कोल्ड कॉफी">
+      <img src="https://amritfood.com/wp-content/uploads/2021/11/Cold-Coffee.png" alt="Cold Coffee" />
+      <div class="menu-details">
+        <h3 data-en="Cold Coffee" data-hi="कोल्ड कॉफी">Cold Coffee</h3>
+        <p data-en="Chilled coffee blended with milk and ice cream." data-hi="दूध और आइसक्रीम के साथ ब्लेंड की गई ठंडी कॉफी।">Chilled coffee blended with milk and ice cream.</p>
+        <div class="menu-price">₹129</div>
+      </div>
+    </div>
+  
+    <div class="menu-item" data-category="drink" data-name="Fresh Lime Soda/फ्रेश लाइम सोडा">
+      <img src="https://media.istockphoto.com/id/596803774/photo/cold-cocktail-with-lime-lemon-tonic-vodka-and-ice.jpg?s=612x612&w=0&k=20&c=1Fp2ACTL-3Ifedqxj0_OZTPl0Ty-lfW-eDDcepTTfO0=" alt="Fresh Lime Soda" />
+      <div class="menu-details">
+        <h3 data-en="Fresh Lime Soda" data-hi="फ्रेश लाइम सोडा">Fresh Lime Soda</h3>
+        <p data-en="Refreshing drink made with lemon, soda, and sugar." data-hi="नींबू, सोडा और चीनी से बनी ताज़ा पेय।">Refreshing drink made with lemon, soda, and sugar.</p>
+        <div class="menu-price">₹69</div>
+      </div>
+    </div>
+  </div>
+    
+
+  <script>
+    function filterMenu(category) {
+      const items = document.querySelectorAll('.menu-item');
+      items.forEach(item => {
+        const matchesCategory = category === 'all' || item.getAttribute('data-category') === category;
+        item.style.display = matchesCategory ? 'block' : 'none';
+      });
+    }
+
+    function searchMenu() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const items = document.querySelectorAll('.menu-item');
+      items.forEach(item => {
+        const name = item.getAttribute('data-name').toLowerCase();
+        item.style.display = name.includes(searchTerm) ? 'block' : 'none';
+      });
+    }
+
+    function switchLanguage(lang) {
+      const elements = document.querySelectorAll('[data-' + lang + ']');
+      elements.forEach(el => {
+        const text = el.getAttribute('data-' + lang);
+        if (text) el.innerText = text;
+      });
+    }
+  </script>
+</body>
+</html>
