@@ -4,7 +4,7 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>QR Digital Menu</title>
-   <link rel="icon" href="https://cdn-icons-png.freepik.com/512/7720/7720549.png" type="image/x-icon" />
+  <link rel="icon" href="https://cdn-icons-png.freepik.com/512/7720/7720549.png" type="image/x-icon" />
   <style>
     body {
       margin: 0;
@@ -18,13 +18,15 @@
     .overlay {
       background: rgba(0, 0, 0, 0.7);
       min-height: 100vh;
-      padding: 20px;
+      padding: 20px 40px;
+      box-sizing: border-box;
     }
 
     h1 {
       text-align: center;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
       color: #ffcc00;
+      font-size: 2.5rem;
     }
 
     .controls {
@@ -32,27 +34,36 @@
       flex-wrap: wrap;
       justify-content: center;
       gap: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
 
     .controls input,
     .controls select,
     .controls button {
-      padding: 10px;
+      padding: 12px 15px;
       border: none;
       border-radius: 5px;
       font-size: 1rem;
+      transition: background 0.3s ease;
+      min-width: 140px;
     }
 
     .controls input {
-      width: 200px;
+      flex: 1 1 200px;
+      max-width: 300px;
+    }
+
+    .controls select {
+      flex: 0 0 150px;
+      cursor: pointer;
     }
 
     .controls button {
       background: #ffcc00;
       color: #000;
       cursor: pointer;
-      transition: 0.3s;
+      flex: 0 1 100px;
+      white-space: nowrap;
     }
 
     .controls button:hover {
@@ -71,38 +82,112 @@
       border-radius: 10px;
       overflow: hidden;
       transition: 0.3s;
+      display: flex;
+      flex-direction: column;
     }
 
     .menu-item img {
       width: 100%;
       height: 160px;
       object-fit: cover;
+      flex-shrink: 0;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
     }
 
     .menu-details {
       padding: 15px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .menu-details h3 {
-      margin-bottom: 5px;
+      margin-bottom: 8px;
       color: #ffcc00;
+      font-size: 1.3rem;
     }
 
     .menu-details p {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: #ddd;
+      flex-grow: 1;
     }
 
     .menu-price {
-      margin-top: 10px;
+      margin-top: 12px;
       font-weight: bold;
       color: #00ff99;
+      font-size: 1.1rem;
     }
 
-    @media (max-width: 500px) {
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .overlay {
+        padding: 15px 20px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .controls input,
+      .controls select,
+      .controls button {
+        font-size: 0.95rem;
+        padding: 10px 12px;
+      }
+
+      .controls input {
+        max-width: 100%;
+        flex: 1 1 100%;
+      }
+
+      .controls select,
+      .controls button {
+        flex: 1 1 45%;
+        min-width: unset;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .overlay {
+        padding: 10px 15px;
+      }
+
+      h1 {
+        font-size: 1.6rem;
+      }
+
       .controls {
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
+        gap: 8px;
+      }
+
+      .controls input,
+      .controls select,
+      .controls button {
+        flex: 1 1 100%;
+        min-width: 0;
+        font-size: 1rem;
+      }
+
+      .menu-item img {
+        height: 140px;
+      }
+
+      .menu-details h3 {
+        font-size: 1.1rem;
+      }
+
+      .menu-details p {
+        font-size: 0.9rem;
+      }
+
+      .menu-price {
+        font-size: 1rem;
       }
     }
   </style>
@@ -314,7 +399,6 @@
       </div>
     </div>
   </div>
-    
 
   <script>
     function filterMenu(category) {
